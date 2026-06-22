@@ -47,18 +47,21 @@ npm start
 
 - Server akan berjalan di http://localhost:3001 (atau `$PORT` kalau env var itu di-set)
 
-# Deploy ke Railway
+# Deploy ke Render (gratis, tidak perlu kartu kredit)
 
-> **Jangan deploy ke Vercel.** Sudah diverifikasi: otakudesu.blog mengembalikan HTTP 403 untuk request yang datang dari IP datacenter Vercel (kemungkinan diblokir Cloudflare/WAF situsnya). Railway/Render belum diblokir.
+> **Jangan deploy ke Vercel.** Sudah diverifikasi dua kali (Node serverless & Edge Runtime): otakudesu.blog mengembalikan HTTP 403 untuk request yang datang dari IP Vercel apapun jenisnya — diblokir di level network/WAF, bukan soal kode. Render belum diblokir.
 
-1. Buka https://railway.app, login pakai akun GitHub.
-2. **New Project** → **Deploy from GitHub repo** → pilih repo ini (`wajik-anime-api`). Izinkan akses Railway ke repo kalau diminta.
-3. Railway otomatis mendeteksi Node.js dan menjalankan `npm install` → `npm run build` → `npm start` (sesuai script di `package.json`). Tunggu sampai status deployment "Active".
-4. Buka tab **Settings** pada service tersebut → bagian **Networking** → klik **Generate Domain** untuk mendapat URL publik, misalnya `https://wajik-anime-api-production.up.railway.app`.
-5. Tes URL itu di browser/curl: `<url>/otakudesu/ongoing?page=1` harus mengembalikan JSON daftar anime ongoing.
-6. Set URL itu sebagai env var `SCRAPER_API_URL` pada project Vercel yang memakai API ini, lalu redeploy.
+1. Buka https://render.com, login/daftar pakai akun GitHub.
+2. **New +** → **Web Service** → **Build and deploy from a Git repository** → pilih repo ini (`wajik-anime-api`). Izinkan akses Render ke repo kalau diminta.
+3. Render biasanya auto-detect lewat `render.yaml` di repo ini (Build Command `npm run build`, Start Command `npm start`, plan **Free**). Kalau diminta isi manual, samakan dengan itu.
+4. Klik **Create Web Service**, tunggu build & deploy selesai (~2-3 menit). Status jadi "Live".
+5. URL publik langsung tersedia di bagian atas dashboard, formatnya `https://wajik-anime-api.onrender.com`.
+6. Tes URL itu di browser/curl: `<url>/otakudesu/ongoing?page=1` harus mengembalikan JSON daftar anime ongoing.
+7. Set URL itu sebagai env var `SCRAPER_API_URL` pada project Vercel yang memakai API ini, lalu redeploy.
 
-Render.com punya flow yang serupa (New → Web Service → connect repo → build command `npm run build`, start command `npm start`) kalau Railway minta kartu kredit untuk plan-nya.
+> Catatan: di plan Free, service akan "tidur" setelah ~15 menit tanpa request dan butuh ~30-50 detik untuk bangun lagi saat ada request pertama setelah idle (cold start). Ini normal untuk free tier, bukan error.
+
+Railway juga bisa dipakai dengan flow serupa (New Project → Deploy from GitHub repo → Generate Domain) kalau sudah punya plan berbayar di sana.
 
 # Routes
 
