@@ -1,5 +1,5 @@
 const appConfig: IAppConfig = {
-  /**
+  /***
    * server port
    */
   PORT: Number(process.env.PORT) || 3001,
